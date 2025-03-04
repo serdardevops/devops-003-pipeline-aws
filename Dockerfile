@@ -1,6 +1,6 @@
 # Uygulamanın çalışması için JDK lazım
 #FROM amazoncorretto:17
-FROM openjdk:17
+FROM openjdk:21
 
 # Prokemizin jar dosyası konumu
 ARG JAR_FILE=target/*.jar
@@ -13,7 +13,7 @@ CMD apt-get update
 # CMD apt-get upgrade -y
 
 # İç portu sabitlemek için
-EXPOSE 8081
+EXPOSE 8083
 
 # Uygulamanın çalışacağı komut
 ENTRYPOINT ["java", "-jar", "my-application.jar"]

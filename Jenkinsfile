@@ -1,8 +1,10 @@
+*/
+
 pipeline {
     agent any
 
     tools{
-        jdk 'JDK17'
+        jdk 'JDK21'
         maven 'Maven3'
 
     }
@@ -10,7 +12,7 @@ pipeline {
     stages {
         stage('Build Maven') {
             steps {
-            checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/serdardevops/devops-002-pipeline']])
+            checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/serdardevops/devops-003-pipeline-aws']])
                 bat 'mvn clean install'
             }
         }
@@ -56,3 +58,4 @@ pipeline {
         }
     }
 }
+*/
