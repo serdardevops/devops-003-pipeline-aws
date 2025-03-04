@@ -1,30 +1,38 @@
-*/
-
 pipeline {
     agent any
 
-    tools{
+    tools {
         jdk 'JDK21'
         maven 'Maven3'
-
     }
 
     stages {
+        stage('Cleanup Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+        stage('Checkout from SCM') {
+            steps {
+                git branch: 'master', credentialsId: 'github', url: 'https://github.com/serdardevops/devops-003-pipeline-aws'
+            }
+        }
         stage('Build Maven') {
             steps {
-            checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/serdardevops/devops-003-pipeline-aws']])
-                bat 'mvn clean install'
+
+               sh 'mvn clean package'
+
             }
         }
-
-
-        stage('Unit Test') {
+        stage('Test Application') {
             steps {
-                bat 'mvn test'
-                bat 'echo Unit Test'
+                sh 'mvn test'
             }
         }
 
+    }
+}
+/*
         stage('Docker Image') {
             steps {
                 bat 'docker build -t serdardevops/my-application .'
