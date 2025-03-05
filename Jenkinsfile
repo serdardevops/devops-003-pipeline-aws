@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'My-Jenkins-Agent'
+        label 'Jenkins-Agent'
     }
     environment {
         APP_NAME = "devops-003-pipeline-aws"
@@ -9,7 +9,6 @@ pipeline {
         DOCKER_LOGIN = "dockerhub"
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}.${BUILD_NUMBER}"
-        JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
     }
     tools {
         jdk 'JDK21'
