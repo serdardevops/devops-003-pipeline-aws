@@ -46,7 +46,7 @@ pipeline {
                 }
             }
         }
-/*
+        /*
        stage("Quality Gate"){
            steps {
                script {
@@ -69,7 +69,7 @@ pipeline {
                 }
             }
         }
-/*
+        /*
         stage('Deploy Kubernetes') {
             steps {
               script {
@@ -84,4 +84,4 @@ pipeline {
             }
         }
     }*/
-}
+    }
