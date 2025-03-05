@@ -1,11 +1,21 @@
 pipeline {
-    agent any
-
+    agent {
+        label 'My-Jenkins-Agent'
+    }
+    // agent any
+    environment {
+        APP_NAME = "devops-003-pipeline-aws"
+        RELEASE = "1.0"
+        DOCKER_USER = "serdardevops"
+        DOCKER_LOGIN = "dockerhub"
+        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}.${BUILD_NUMBER}"
+        JENKINS_API_TOKEN = credentials ("JENKINS_API_TOKEN")
+    }
     tools {
         jdk 'JDK21'
         maven 'Maven3'
     }
-
     stages {
         stage('Cleanup Workspace') {
             steps {
@@ -19,9 +29,7 @@ pipeline {
         }
         stage('Build Maven') {
             steps {
-
-               sh 'mvn clean package'
-
+                sh 'mvn clean package'
             }
         }
         stage('Test Application') {
@@ -29,7 +37,6 @@ pipeline {
                 sh 'mvn test'
             }
         }
-
         stage("SonarQube Analysis") {
             steps {
                 script {
@@ -39,7 +46,7 @@ pipeline {
                 }
             }
         }
-
+        /*
        stage("Quality Gate"){
            steps {
                script {
@@ -50,25 +57,19 @@ pipeline {
 
     }
 }
-/*
-        stage('Docker Image') {
+*/
+        stage('Build & Push Docker Image to DockerHub') {
             steps {
-                bat 'docker build -t serdardevops/my-application .'
-            }
-        }
-
-        stage('Docker Image to DeckerHub') {
-            steps {
-              script{
-                    withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) {
-
-                     bat 'echo docker login -u serdardevops -p ${dockerhub}'
-                     bat 'docker image push serdardevops/my-application'
+                script {
+                    docker.withRegistry('', DOCKER_LOGIN) {
+                        docker_image = docker.build "${IMAGE_NAME}"
+                        docker_image.push("${IMAGE_TAG}")
+                        docker_image.push("latest")
                     }
                 }
             }
         }
-
+        /*
         stage('Deploy Kubernetes') {
             steps {
               script {
