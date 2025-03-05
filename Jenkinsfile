@@ -2,7 +2,6 @@ pipeline {
     agent {
         label 'My-Jenkins-Agent'
     }
-    // agent any
     environment {
         APP_NAME = "devops-003-pipeline-aws"
         RELEASE = "1.0"
@@ -10,7 +9,7 @@ pipeline {
         DOCKER_LOGIN = "dockerhub"
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}.${BUILD_NUMBER}"
-        JENKINS_API_TOKEN = credentials ("JENKINS_API_TOKEN")
+        JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
     }
     tools {
         jdk 'JDK21'
@@ -46,18 +45,14 @@ pipeline {
                 }
             }
         }
-        /*
-       stage("Quality Gate"){
-           steps {
-               script {
+        // Quality Gate aşamasını yorumdan çıkarıp düzelttim (isteğe bağlı olarak aktif edebilirsiniz)
+        stage("Quality Gate") {
+            steps {
+                script {
                     waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-token'
                 }
             }
         }
-
-    }
-}
-*/
         stage('Build & Push Docker Image to DockerHub') {
             steps {
                 script {
@@ -69,19 +64,20 @@ pipeline {
                 }
             }
         }
+        // Kubernetes ve Docker temizleme aşamalarını yorumda bıraktım, isterseniz aktif edebilirsiniz
         /*
         stage('Deploy Kubernetes') {
             steps {
-              script {
-                    kubernetesDeploy (configs: 'deploymentservice.yaml',kubeconfigId: 'kubernetes' )
+                script {
+                    kubernetesDeploy(configs: 'deploymentservice.yaml', kubeconfigId: 'kubernetes')
                 }
             }
         }
-
         stage('Docker Image to Clean') {
             steps {
                 bat 'docker image prune -f'
             }
         }
-    }*/
+        */
     }
+}
