@@ -45,7 +45,6 @@ pipeline {
                 }
             }
         }
-        // Quality Gate aşamasını yorumdan çıkarıp düzelttim (isteğe bağlı olarak aktif edebilirsiniz)
         stage("Quality Gate") {
             steps {
                 script {
@@ -64,7 +63,6 @@ pipeline {
                 }
             }
         }
-        // Kubernetes ve Docker temizleme aşamalarını yorumda bıraktım, isterseniz aktif edebilirsiniz
         /*
         stage('Deploy Kubernetes') {
             steps {
