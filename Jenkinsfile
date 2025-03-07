@@ -25,31 +25,6 @@ pipeline {
                 git branch: 'master', credentialsId: 'github', url: 'https://github.com/serdardevops/devops-003-pipeline-aws'
             }
         }
-
-        stage('Execute Command Based on OS') {
-            steps {
-                script {
-                    // Windows kontrolü
-                    if (isUnix()) {
-                        // For Unix (Mac/Linux)
-                        sh label: 'Run Maven tests on Unix', script: '''
-                            echo "This is Unix (Mac/Linux)"
-                            mvn test
-                        '''
-                    } else {
-                        // For Windows
-                        bat label: 'Run Maven tests on Windows', script: '''
-                            echo This is Windows
-                            mvn test
-                        '''
-                    }
-                }
-            }
-        }
-    }
-
-}
-        /*
         stage('Build Maven') {
             steps {
                 sh 'mvn clean package'
@@ -77,7 +52,7 @@ pipeline {
                 }
             }
         }
-
+        */
         stage('Build & Push Docker Image to DockerHub') {
             steps {
                 script {
@@ -114,13 +89,13 @@ pipeline {
                     docker container rm -f $(docker container ls -aq)
 
                     docker volume prune
-
+                    */
 
                 }
             }
         }
         
-
+        /*
         stage('Deploy Kubernetes') {
             steps {
                 script {
@@ -133,7 +108,6 @@ pipeline {
                 bat 'docker image prune -f'
             }
         }
-
+        */
     }
 }
-*/
