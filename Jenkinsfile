@@ -44,15 +44,15 @@ pipeline {
                 }
             }
         }
-        /*
         stage("Quality Gate") {
             steps {
                 script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-token'
+                    timeout(time: 10, unit: 'MINUTES') { // 10 dakika zaman aşımı
+                        waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-token'
+                    }
                 }
             }
         }
-        */
         stage('Build & Push Docker Image to DockerHub') {
             steps {
                 script {
@@ -64,7 +64,6 @@ pipeline {
                 }
             }
         }
-
         stage("Trivy Scan") {
             steps {
                 script {
