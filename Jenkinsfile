@@ -102,7 +102,7 @@ pipeline {
         }
     }
 }
-        /*
+/*
         stage ('Cleanup Artifacts') {
             steps {
                 script {
@@ -122,13 +122,13 @@ pipeline {
                     docker container rm -f $(docker container ls -aq)
 
                     docker volume prune
-                    */
+
 
                 }
             }
         }
         
-        /*
+
         stage('Deploy Kubernetes') {
             steps {
                 script {
