@@ -100,7 +100,8 @@ pipeline {
                 }
             }
         }
-
+    }
+}
         /*
         stage ('Cleanup Artifacts') {
             steps {
@@ -140,6 +141,7 @@ pipeline {
                 bat 'docker image prune -f'
             }
         }
-        */
+
     }
 }
+*/
