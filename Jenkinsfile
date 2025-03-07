@@ -40,6 +40,9 @@ pipeline {
                 }
             }
         }
+    }
+
+}
         /*
         stage('Build Maven') {
             steps {
@@ -124,6 +127,7 @@ pipeline {
                 bat 'docker image prune -f'
             }
         }
-        */
+
     }
 }
+*/
