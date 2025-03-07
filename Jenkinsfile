@@ -72,7 +72,36 @@ pipeline {
                 }
             }
         }
+        stage('Cleanup Artifacts') {
+            steps {
+                script {
+                    // For Unix (Mac/Linux)
+                    if (isUnix()) {
+                        sh label: 'Docker cleanup on Unix', script: '''
+                            echo "Cleaning up Docker artifacts on Unix..."
+                            docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true
+                            docker rmi ${IMAGE_NAME}:latest || true
+                            docker rmi $(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'devops-003-pipeline-aws' || echo "No images found") || true
+                            docker container rm -f $(docker container ls -aq) || true
+                            docker volume prune -f || true
+                        '''
+                    }
+                    // For Windows
+                    else {
+                        bat label: 'Docker cleanup on Windows', script: '''
+                            echo Cleaning up Docker artifacts on Windows...
+                            docker rmi %IMAGE_NAME%:%IMAGE_TAG% || exit 0
+                            docker rmi %IMAGE_NAME%:latest || exit 0
+                            docker rmi %%(docker images --format "{{.Repository}}:{{.Tag}}" ^| findstr "devops-003-pipeline-aws" || echo "No images found") || exit 0
+                            docker container rm -f %%(docker container ls -aq) || exit 0
+                            docker volume prune -f || exit 0
+                        '''
+                    }
+                }
+            }
+        }
 
+        /*
         stage ('Cleanup Artifacts') {
             steps {
                 script {
