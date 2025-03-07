@@ -30,12 +30,18 @@ pipeline {
             steps {
                 script {
                     // Windows kontrolü
-                    if (!isUnix()) {
-                        bat 'echo This is Windows & mvn test'
-                    }
-                    // Mac veya Linux kontrolü
                     if (isUnix()) {
-                        sh 'echo This is Unix (Mac/Linux) && mvn test'
+                        // For Unix (Mac/Linux)
+                        sh label: 'Run Maven tests on Unix', script: '''
+                            echo "This is Unix (Mac/Linux)"
+                            mvn test
+                        '''
+                    } else {
+                        // For Windows
+                        bat label: 'Run Maven tests on Windows', script: '''
+                            echo This is Windows
+                            mvn test
+                        '''
                     }
                 }
             }
